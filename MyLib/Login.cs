@@ -13,6 +13,9 @@ namespace MyLib
 {
     public partial class Login : Form
     {
+
+        public event EventHandler UserLoggedIn;
+
         public Login()
         {
             InitializeComponent();
@@ -33,16 +36,23 @@ namespace MyLib
                 if (string.Compare(user.username, textBoxUsername.Text, true) == 0 && user.password == textBoxPassword.Text)
                     return true;
             }
-            return true;
+            return false;
         }
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             if (UserIsValid())
             {
+                if (UserLoggedIn != null)
+                    UserLoggedIn(this, EventArgs.Empty);
                 Close();
                 return;
             }
             MessageBox.Show(this, "Invalid username or password", "User Login", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
